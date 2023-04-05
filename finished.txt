@@ -1,46 +1,27 @@
 Current Order List:
-
+--------------------
 Amp/Fet
-[999]: Use a 1000 gram bag
-Then put up -1
-[876]: Use a 1000 gram bag
-Then put up -124
-[752]: Use a 1000 gram bag
-Then put up -248
-[498]: Use a 500 gram bag
-Then put up -2
-[456]: Use a 500 gram bag
-Then put up -44
-[423]: Use a 500 gram bag
-Then put up -77
-[359]: Use a 500 gram bag
-Then put up -141
-[281]: Use a 500 gram bag
-Then put up -219
-[116]: Use a 500 gram bag
-Then put up -384
-[99]: Use a 100 gram bag
-Then put up -1
-[69]: Use a 100 gram bag
-Then put up -31
-[42]: Use a 50 gram bag
-Then put up -8
-[25]: Use a 50 gram bag
-Then put up -25
-[9]: Use a 10 gram bag
-Then put up -1
-[4]: Use a 5 gram bag
-Then put up -1
-[2]: Use a 2 gram bag
 [13]: Use a 20 gram bag
 Then put up -7
 --------------------
 Ganja/Grass
+[19]: Use a 20 gram bag
+Then put up -1
 --------------------
 Ectasy/Candy
+[23]: Use a 50 gram bag
+Then put up -27
 --------------------
 Meth
+[41]: Use a 50 gram bag
+Then put up -9
 --------------------
 Coke
+[11]: Use a 20 gram bag
+Then put up -9
 --------------------
 Hero
+[9]: Use a 10 gram bag
+Then put up -1
+[4]: Use a 5 gram bag
+Then put up -1
