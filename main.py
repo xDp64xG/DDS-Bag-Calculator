@@ -9,7 +9,22 @@ class DDS:
         self.array = ""
         self.lines2 = ""
         self.window = tk.Tk()
-        self.entry = tk.Text()
+        self.frame_a = tk.Frame(master=self.window, width=100, height=100)
+        self.frame_b = tk.Frame(master=self.window, width=50, height=50, bg='black')
+        self.frame_c = tk.Frame(master=self.window, width=100, height=100, bg='red')
+        self.label = tk.Label(master=self.frame_b,
+                         text="Something here",
+                         height=200,
+                         width=200,
+                         bg="black",
+                         fg="white")
+
+
+        self.entry = tk.Text(master=self.frame_a,
+                             width=50,
+                             height=50,
+                             fg='black',
+                             bg='white')
         self.numbersR = open('numbers.txt', 'r')
         self.numbersW = open('numbers.txt', 'w')
         self.finishedW = open('finished.txt', 'w')
@@ -36,9 +51,6 @@ class DDS:
             Bag = 0
             bool = True
 
-            #file2 = open('finished.txt', 'w')
-
-            #self.finishedW.writelines(line)
             file2 = open('finished.txt', 'w')
             file2.writelines(line)
             #Use text file to input your orders, or test it out yourself!
@@ -191,22 +203,17 @@ class DDS:
             window = self.window
             entry = self.entry
             data = entry.get('1.0', tk.END)
-
-            #print(data)
-
-            #self.numbersW.writelines(data)
             file1 = open('numbers.txt', 'w')
             file1.writelines(data)
             file1.close()
             var = process()
-            #print("Var: {}".format(var))
-            label = tk.Label(text=var)
+            try:
+                self.label.config(text = var)
+            except:
+                print("Unable to config label")
 
+            self.label.pack()
 
-            #array = self.array
-            #print(array)
-            #label = tk.Label(text=array)
-            label.pack()
         def on_exit():
             print("Exiting...")
             window = self.window
@@ -222,17 +229,18 @@ class DDS:
         array = ""
         array = line
 
-
-
-        #window = tk.Tk()
         window = self.window
         label = tk.Label(
-            text="Welcome to [].\nClick on the buttons below to get started.")
+            master=self.frame_a,
+            text="Welcome to [].\nUse the template and put \n"
+                 "in your order numbers corresponding\n"
+                 " to each category and hit refresh on the far right!")
 
 
         button2 = tk.Button(
+            master=self.frame_c,
             text="Refresh Data",
-            width=25,
+            width=15,
             height=5,
             bg="blue",
             fg="red",
@@ -240,8 +248,9 @@ class DDS:
         )
 
         button3 = tk.Button(
+            master=self.frame_c,
             text="Exit",
-            width=25,
+            width=15,
             height=5,
             bg='black',
             fg='red',
@@ -259,7 +268,9 @@ class DDS:
         button3.pack()
         #label = tk.Label(text=array)
         #label.pack()
-
+        self.frame_a.pack(fill=tk.BOTH, side=tk.LEFT, expand=True)
+        self.frame_b.pack(fill=tk.BOTH, side=tk.LEFT, expand=True)
+        self.frame_c.pack(fill=tk.BOTH, side=tk.LEFT, expand=True)
         window.mainloop()
 
 
