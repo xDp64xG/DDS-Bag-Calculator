@@ -1,7 +1,8 @@
 import tkinter as tk
 
-#var = input("Give a bag number: ")
-#var = int(var)
+
+# var = input("Give a bag number: ")
+# var = int(var)
 
 
 class DDS:
@@ -9,31 +10,49 @@ class DDS:
         self.array = ""
         self.lines2 = ""
         self.window = tk.Tk()
-        self.frame_a = tk.Frame(master=self.window, width=100, height=100)
+
+        v = tk.Scrollbar(self.window, orient='vertical')
+        v.pack(side=tk.RIGHT, fill='y')
+        self.frame_a = tk.Frame(master=self.window, width=75, height=75)
         self.frame_b = tk.Frame(master=self.window, width=50, height=50, bg='black')
         self.frame_c = tk.Frame(master=self.window, width=100, height=100, bg='red')
-        self.label = tk.Label(master=self.frame_b,
-                         text="Something here",
-                         height=200,
-                         width=200,
-                         bg="black",
-                         fg="white")
 
+        self.label = tk.Label(master=self.frame_b,
+                              height=75,
+                              width=75,
+                              bg="black",
+                              fg="white",
+                              font=("Times New Roman", 15),
+                              )
+        self.t = tk.Text(self.label, yscrollcommand=v.set)
+        self.t.pack(expand=True, fill=tk.BOTH)
+        self.t.config(width=50,
+                      height=50,
+                      bg='black',
+                      fg='white',
+                      font=("Times New Roman", 15))
+        #v.config(command=self.label.yview)
 
         self.entry = tk.Text(master=self.frame_a,
                              width=50,
                              height=50,
                              fg='black',
                              bg='white')
-        self.numbersR = open('numbers.txt', 'r')
-        self.numbersW = open('numbers.txt', 'w')
-        self.finishedW = open('finished.txt', 'w')
+        v.config(command=self.t.yview)
+        # self.numbersR = open('numbers.txt', 'r')
+        # self.numbersW = open('numbers.txt', 'w')
+        # self.finishedW = open('finished.txt', 'w')
 
     def main(self):
 
         array = ""
 
         def process():
+            #If text widget has data, delete and start fresh
+            try:
+                self.t.delete("1.0", tk.END)
+            except:
+                print("No text or failed to delete contents.")
 
             var = 0
             var2 = ""
@@ -53,29 +72,24 @@ class DDS:
 
             file2 = open('finished.txt', 'w')
             file2.writelines(line)
-            #Use text file to input your orders, or test it out yourself!
+            # Use text file to input your orders, or test it out yourself!
             file1 = open('numbers.txt')
 
-            #file1 = self.numbersR
-
-            #Lines = file1.readlines()
             Lines = file1.readlines()
-            #print("Lines: {}".format(Lines))
             lines2 = ""
-            #print(Lines)
-            #Cycle through text file
 
-            #Switch print to writing to file
+            # Cycle through text file
+
+            # Switch print to writing to file
             def write(var):
                 file2 = open('finished.txt', 'a')
                 file2.writelines(var)
                 file2.close()
 
-
             for i in Lines:
-                #print('i: {}'.format(i))
+                # print('i: {}'.format(i))
                 lines2 += i
-                #print(i)
+                # print(i)
                 try:
 
                     var = int(i)
@@ -83,113 +97,113 @@ class DDS:
                 except:
                     var2 = str(i)
                     var = 0
-                    #print("--------------------\n{}".format(var2))
+                    # print("--------------------\n{}".format(var2))
                     line += "--------------------\n{}".format(var2)
-                    #write(line)
+                    # write(line)
                     bool = True
 
                 if bool == True:
                     pass
                 else:
-                    #Cycle through all current bag sizes
+                    # Cycle through all current bag sizes
                     if var < Kilo and var > Half_K or var == Kilo:
                         Bag = var - Kilo
                         if Bag == 0:
-                            #print("[{}]: Use a {} gram bag\n".format(var, Kilo))
+                            # print("[{}]: Use a {} gram bag\n".format(var, Kilo))
                             line += "[{}]: Use a {} gram bag\n".format(var, Kilo)
-                            #write(line)
+                            # write(line)
                         else:
-                            #print("[{}]: Use a {} gram bag\nThen put up {}\n".format(var, Kilo, Bag))
+                            # print("[{}]: Use a {} gram bag\nThen put up {}\n".format(var, Kilo, Bag))
                             line += "[{}]: Use a {} gram bag\nThen put up {}\n".format(var, Kilo, Bag)
-                            #write(line)
+                            # write(line)
 
                     elif var < Half_K and var > Hundred or var == Half_K:
                         Bag = var - Half_K
                         if Bag == 0:
-                            #print("[{}]: Use a {} gram bag\n".format(var, Half_K))
+                            # print("[{}]: Use a {} gram bag\n".format(var, Half_K))
                             line += "[{}]: Use a {} gram bag\n".format(var, Half_K)
-                            #write(line)
+                            # write(line)
                         else:
-                            #print("[{}]: Use a {} gram bag\nThen put up {}\n".format(var, Half_K, Bag))
+                            # print("[{}]: Use a {} gram bag\nThen put up {}\n".format(var, Half_K, Bag))
                             line += "[{}]: Use a {} gram bag\nThen put up {}\n".format(var, Half_K, Bag)
-                            #write(line)
+                            # write(line)
 
                     elif var < Hundred and var > Fifty or var == Hundred:
                         Bag = var - Hundred
                         if Bag == 0:
-                            #print("[{}]: Use a {} gram bag\n".format(var, Hundred))
+                            # print("[{}]: Use a {} gram bag\n".format(var, Hundred))
                             line += "[{}]: Use a {} gram bag\n".format(var, Hundred)
-                            #write(line)
+                            # write(line)
                         else:
-                            #print("[{}]: Use a {} gram bag\nThen put up {}\n".format(var, Hundred, Bag))
+                            # print("[{}]: Use a {} gram bag\nThen put up {}\n".format(var, Hundred, Bag))
                             line += "[{}]: Use a {} gram bag\nThen put up {}\n".format(var, Hundred, Bag)
-                            #write(line)
+                            # write(line)
 
                     elif var < Fifty and var > Twenty or var == Fifty:
                         Bag = var - Fifty
                         if Bag == 0:
-                            #print("[{}]: Use a {} gram bag\n".format(var, Fifty))
+                            # print("[{}]: Use a {} gram bag\n".format(var, Fifty))
                             line += "[{}]: Use a {} gram bag\n".format(var, Fifty)
-                            #write(line)
+                            # write(line)
                         else:
-                            #print("[{}]: Use a {} gram bag\nThen put up {}\n".format(var, Fifty, Bag))
+                            # print("[{}]: Use a {} gram bag\nThen put up {}\n".format(var, Fifty, Bag))
                             line += "[{}]: Use a {} gram bag\nThen put up {}\n".format(var, Fifty, Bag)
-                            #write(line)
+                            # write(line)
 
                     elif var < Twenty and var > Ten or var == Twenty:
                         Bag = var - Twenty
                         if Bag == 0:
-                            #print("[{}]: Use a {} gram bag\n".format(var, Twenty))
+                            # print("[{}]: Use a {} gram bag\n".format(var, Twenty))
                             line += "[{}]: Use a {} gram bag\n".format(var, Twenty)
-                            #write(line)
+                            # write(line)
                         else:
-                            #print("[{}]: Use a {} gram bag\nThen put up {}\n".format(var, Twenty, Bag))
+                            # print("[{}]: Use a {} gram bag\nThen put up {}\n".format(var, Twenty, Bag))
                             line += "[{}]: Use a {} gram bag\nThen put up {}\n".format(var, Twenty, Bag)
-                            #write(line)
+                            # write(line)
 
                     elif var < Ten and var > Five or var == Ten:
                         Bag = var - Ten
                         if Bag == 0:
-                            #print("[{}]: Use a {} gram bag\n".format(var, Ten))
+                            # print("[{}]: Use a {} gram bag\n".format(var, Ten))
                             line += "[{}]: Use a {} gram bag\n".format(var, Ten)
-                            #write(line)
+                            # write(line)
                         else:
-                            #print("[{}]: Use a {} gram bag\nThen put up {}\n".format(var, Ten, Bag))
+                            # print("[{}]: Use a {} gram bag\nThen put up {}\n".format(var, Ten, Bag))
                             line += "[{}]: Use a {} gram bag\nThen put up {}\n".format(var, Ten, Bag)
-                            #write(line)
+                            # write(line)
 
                     elif var <= Five and var > Three:
                         Bag = var - Five
                         if Bag == 0:
-                            #print("[{}]: Use a {} gram bag\n".format(var, Five))
+                            # print("[{}]: Use a {} gram bag\n".format(var, Five))
                             line += "[{}]: Use a {} gram bag\n".format(var, Five)
-                            #write(line)
+                            # write(line)
                         else:
-                            #print("[{}]: Use a {} gram bag\nThen put up {}\n".format(var, Five, Bag))
+                            # print("[{}]: Use a {} gram bag\nThen put up {}\n".format(var, Five, Bag))
                             line += "[{}]: Use a {} gram bag\nThen put up {}\n".format(var, Five, Bag)
-                            #write(line)
+                            # write(line)
 
                     else:
                         if var == 3:
-                            #print("[{}]: Use a 3 gram bag\n".format(var))
+                            # print("[{}]: Use a 3 gram bag\n".format(var))
                             line += "[{}]: Use a 3 gram bag\n".format(var)
-                            #write(line)
+                            # write(line)
 
                         elif var == 2:
-                            #print("[{}]: Use a 2 gram bag\n".format(var))
+                            # print("[{}]: Use a 2 gram bag\n".format(var))
                             line += "[{}]: Use a 2 gram bag\n".format(var)
-                            #write(line)
+                            # write(line)
 
                         else:
                             if var == 1:
-                                #print("[{}]: Use a 1 gram bag\n".format(var))
+                                # print("[{}]: Use a 1 gram bag\n".format(var))
                                 line += "[{}]: Use a 1 gram bag\n".format(var)
-                                #write(line)
+                                # write(line)
                             else:
                                 pass
             file1.close()
             print("Finished. Check 'finished.txt'")
-            #print(line)
+            # print(line)
 
             write(line)
             self.lines2 = lines2
@@ -199,8 +213,6 @@ class DDS:
 
         def handle_click2():
             print("2nd button clicked")
-
-            window = self.window
             entry = self.entry
             data = entry.get('1.0', tk.END)
             file1 = open('numbers.txt', 'w')
@@ -208,7 +220,10 @@ class DDS:
             file1.close()
             var = process()
             try:
-                self.label.config(text = var)
+                #self.label.config(text=var)
+                self.t.insert("1.0", var)
+                #self.t.config(text=var)
+                #self.t.pack(master=self.frame_b)
             except:
                 print("Unable to config label")
 
@@ -218,24 +233,17 @@ class DDS:
             print("Exiting...")
             window = self.window
             window.destroy()
-            file1 = self.numbersW
-            file2 = self.finishedW
-            file1.close()
-            file2.close()
 
         line = process()
-
-
         array = ""
         array = line
 
         window = self.window
         label = tk.Label(
             master=self.frame_a,
-            text="Welcome to [].\nUse the template and put \n"
+            text="Welcome to DDS Bag Calculator.\nUse the template and put \n"
                  "in your order numbers corresponding\n"
                  " to each category and hit refresh on the far right!")
-
 
         button2 = tk.Button(
             master=self.frame_c,
@@ -258,7 +266,7 @@ class DDS:
         )
         entry = self.entry
         template = 'Amp/Fet\n13\nGanja/Grass\n19\nEctasy/Candy\n23\nMeth\n41\nCoke\n11\nHero\n9\n4'
-        #entry = tk.Text()
+        # entry = tk.Text()
         entry.insert(tk.END, template)
 
         label.pack()
@@ -266,18 +274,14 @@ class DDS:
 
         button2.pack()
         button3.pack()
-        #label = tk.Label(text=array)
-        #label.pack()
+        # label = tk.Label(text=array)
+        # label.pack()
         self.frame_a.pack(fill=tk.BOTH, side=tk.LEFT, expand=True)
         self.frame_b.pack(fill=tk.BOTH, side=tk.LEFT, expand=True)
         self.frame_c.pack(fill=tk.BOTH, side=tk.LEFT, expand=True)
         window.mainloop()
 
-
 loop = DDS()
 loop.main()
 
-
-
-#foundation
-#g
+# foundation
