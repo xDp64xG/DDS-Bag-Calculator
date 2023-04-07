@@ -1,6 +1,9 @@
 # DDS Bag Calculator
  Calculate exact bag accounts in DDS inputted into 'numbers.txt' file by the user and outputted to 'finished.txt'.
 
+# How to Run?
+ Install Python, currently works for 3.8, run 'pip install py2exe', and then in the directory of main.py and setup.py, run 'python setup.py py2exe' in the command prompt. After finished, check dist folder, and run main.exe, everything should be included.
+
 # Features
  GUI - Has some functionality nad can update from whats in the text box, as intended. Revamping code soon.
 

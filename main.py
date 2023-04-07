@@ -70,10 +70,16 @@ class DDS:
             Bag = 0
             bool = True
 
-            file2 = open('finished.txt', 'w')
+            file2 = open('finished.txt', 'w+')
             file2.writelines(line)
             # Use text file to input your orders, or test it out yourself!
-            file1 = open('numbers.txt')
+
+            try:
+                file1 = open('numbers.txt', 'r+')
+            except:
+                file1 = open('numbers.txt', 'w+')
+                file1.close()
+                file1 = open('numbers.txt', 'r')
 
             Lines = file1.readlines()
             lines2 = ""
