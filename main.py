@@ -1,12 +1,23 @@
 import tkinter as tk
 from PIL import ImageTk, Image
-
+import os
 # var = input("Give a bag number: ")
 # var = int(var)
 
 
 class DDS:
     def __init__(self):
+
+        def resource_path(relative_path):
+            """ Get absolute path to resource, works for dev and for PyInstaller """
+            try:
+                # PyInstaller creates a temp folder and stores path in _MEIPASS
+                base_path = sys._MEIPASS
+            except Exception:
+                base_path = os.path.abspath(".")
+
+            return os.path.join(base_path, relative_path)
+
         self.array = ""
         self.lines2 = ""
         self.window = tk.Tk()
@@ -47,7 +58,7 @@ class DDS:
 
         self.content.grid(column=0, row=0, columnspan=4, rowspan=5, sticky=(tk.N + tk.S + tk.E + tk.W))
 
-        self.iconPath = 'images/bg.png'
+        self.iconPath = resource_path('images/bg.png')
         self.tmpimg = Image.open(self.iconPath)
         self.size = self.tmpimg.size
         print(self.size)
