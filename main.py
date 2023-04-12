@@ -21,18 +21,11 @@ class DDS:
         self.array = ""
         self.lines2 = ""
         self.window = tk.Tk()
-        self.window.geometry("599x796")
+        self.window.geometry("561x668")
+        #self.window.geometry("599x796")
         self.window.title("DDS Bag Calculator")
         self.window.config(bg="lightgrey")
 
-        #bgdir = "images/bg.jpg"
-        #tmpimg = Image.open(bgdir)
-        #tmpimg.resize((100, 100),Image.ANTIALIAS)
-
-        #bg = ImageTk.PhotoImage(tmpimg)
-        #bg.resize(width=100, height=100)
-        #print("BG: {}".format(bg))
-        #hmmm
         self.window.attributes('-topmost', True)
 
         # self.window.attributes('-fullscreen', True)
@@ -63,14 +56,8 @@ class DDS:
         self.size = self.tmpimg.size
         print(self.size)
 
-        #self.tmpimg.resize((self.size[0] * 100), (self.size[1] * 100))
-        #self.tmpimg.resize(700, 800)
         self.icon = ImageTk.PhotoImage(self.tmpimg)
-        #print(self.icon.size)
-        #self.icon_size = tk.Label(self.content)
-        #self.icon_size.image = self.icon  # <== this is were we anchor the img object
-        #self.icon_size.configure(image=self.icon)
-        #self.icon_size.grid()
+
         self.canvas = tk.Canvas(self.content, height=796, width=599)
         #self.canvas.create_image(300, 275, image=self.icon, anchor = 'center')
         self.canvas.create_image(235, 400, image=self.icon, anchor='center')
@@ -78,19 +65,6 @@ class DDS:
 
 
         self.canvas.grid(column=0, row=0, columnspan=4, rowspan=5, sticky=(tk.N + tk.S + tk.E + tk.W), padx=5, pady=5)
-        """self.bg_canv = tk.Canvas(
-                                 width=500,
-                                 height=500)
-        #self.bg_canv.grid()
-        
-        self.bg_lbl = tk.Label(master=self.window, image=bg,
-                               width=100, height=100)
-        self.bg_lbl.grid()
-        
-        self.bg_lbl.config(image=bg)
-        
-        self.bg_canv.create_image(20,20, anchor=tk.N, image=bg)"""
-        #self.bg_label.grid(column=0, row=0, columnspan=4, rowspan=4, sticky=(tk.N + tk.S + tk.E + tk.W))
         # Our scrollbar
         v = tk.Scrollbar(self.window, orient='vertical')
         v2 = tk.Scrollbar(self.window, orient='vertical')
@@ -267,6 +241,14 @@ class DDS:
             file1.close()
             var = process()
             self.t.config(state='normal')
+            #Get width and height for current window
+            """
+            wid = self.window.winfo_width()
+            hei = self.window.winfo_height()
+            screen_width = self.window.winfo_screenwidth()
+            screen_height = self.window.winfo_screenheight()
+            print("Width: {}\nHeight: {}".format(wid, hei))"""
+
             try:
                 self.t.delete('1.0', tk.END)
                 self.t.insert("1.0", var)
