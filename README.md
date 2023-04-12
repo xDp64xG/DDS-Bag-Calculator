@@ -7,7 +7,10 @@
  0.1 - GUI version was born...take a look at one of the old images at the bottom...looks ugly but works. This was created with a personal focus of fulfilling orders on DDS, and thought about trying to make it universal for anyone to use.
 
 # How to Run?
+ Install Python (3.8 currently works), run 'pip install pyinstaller', then in the directory of main,py, run 'python-m auto_py_to_exe' And import the config file included and convert. Alternatively, in build, run main.exe.
+ 
  Install Python, currently works for 3.8, run 'pip install py2exe', and then in the directory of main.py and setup.py, run 'python setup.py py2exe' in the command prompt. After finished, check dist folder, and run main.exe, everything should be included. Or just run 'python main.py' to open up the program using python(most stable).
+ 
 
 # Features
  GUI - Has some functionality nad can update from whats in the text box, as intended. Revamping code soon.
