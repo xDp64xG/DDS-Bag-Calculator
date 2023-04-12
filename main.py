@@ -1,5 +1,5 @@
 import tkinter as tk
-
+from PIL import ImageTk, Image
 
 # var = input("Give a bag number: ")
 # var = int(var)
@@ -10,40 +10,107 @@ class DDS:
         self.array = ""
         self.lines2 = ""
         self.window = tk.Tk()
+        self.window.geometry("599x796")
         self.window.title("DDS Bag Calculator")
         self.window.config(bg="lightgrey")
+
+        #bgdir = "images/bg.jpg"
+        #tmpimg = Image.open(bgdir)
+        #tmpimg.resize((100, 100),Image.ANTIALIAS)
+
+        #bg = ImageTk.PhotoImage(tmpimg)
+        #bg.resize(width=100, height=100)
+        #print("BG: {}".format(bg))
+        #hmmm
+        self.window.attributes('-topmost', True)
+
         # self.window.attributes('-fullscreen', True)
         self.window.resizable(True, True)
 
         # Our Frame
         self.content = tk.Frame(self.window, borderwidth=5, relief='ridge')
 
-        self.window.grid_rowconfigure(1, weight=1)
+        self.window.grid_rowconfigure(0, weight=1)
+        self.window.grid_rowconfigure(1, weight=0)
+        self.window.grid_rowconfigure(2, weight=0)
+        self.window.grid_rowconfigure(3, weight=0)
+        self.window.grid_rowconfigure(4, weight=0)
+        self.window.grid_rowconfigure(5, weight=0)
+
         self.window.grid_columnconfigure(0, weight=1)
+        self.window.grid_columnconfigure(1, weight=0)
+        self.window.grid_columnconfigure(2, weight=0)
+        self.window.grid_columnconfigure(3, weight=0)
+        self.window.grid_columnconfigure(4, weight=0)
+        self.window.grid_columnconfigure(5, weight=0)
 
-        self.content.grid(column=0, row=0, columnspan=5, rowspan=5, sticky=(tk.N + tk.S + tk.E + tk.W))
 
+        self.content.grid(column=0, row=0, columnspan=4, rowspan=5, sticky=(tk.N + tk.S + tk.E + tk.W))
+
+        self.iconPath = 'images/bg.png'
+        self.tmpimg = Image.open(self.iconPath)
+        self.size = self.tmpimg.size
+        print(self.size)
+
+        #self.tmpimg.resize((self.size[0] * 100), (self.size[1] * 100))
+        #self.tmpimg.resize(700, 800)
+        self.icon = ImageTk.PhotoImage(self.tmpimg)
+        #print(self.icon.size)
+        #self.icon_size = tk.Label(self.content)
+        #self.icon_size.image = self.icon  # <== this is were we anchor the img object
+        #self.icon_size.configure(image=self.icon)
+        #self.icon_size.grid()
+        self.canvas = tk.Canvas(self.content, height=796, width=599)
+        #self.canvas.create_image(300, 275, image=self.icon, anchor = 'center')
+        self.canvas.create_image(235, 400, image=self.icon, anchor='center')
+
+
+
+        self.canvas.grid(column=0, row=0, columnspan=4, rowspan=5, sticky=(tk.N + tk.S + tk.E + tk.W), padx=5, pady=5)
+        """self.bg_canv = tk.Canvas(
+                                 width=500,
+                                 height=500)
+        #self.bg_canv.grid()
+        
+        self.bg_lbl = tk.Label(master=self.window, image=bg,
+                               width=100, height=100)
+        self.bg_lbl.grid()
+        
+        self.bg_lbl.config(image=bg)
+        
+        self.bg_canv.create_image(20,20, anchor=tk.N, image=bg)"""
+        #self.bg_label.grid(column=0, row=0, columnspan=4, rowspan=4, sticky=(tk.N + tk.S + tk.E + tk.W))
         # Our scrollbar
         v = tk.Scrollbar(self.window, orient='vertical')
+        v2 = tk.Scrollbar(self.window, orient='vertical')
         v.grid(column=5, row=1, rowspan=2)
-
+        v2.grid(column=0, row=1, rowspan=2, sticky=(tk.NW + tk.SW))
         # Self t is output
-        self.t = tk.Text(master=self.content,
+        self.t = tk.Text(master=self.canvas,
                          bg='black',
                          fg='white',
-                         height=50,
-                         width=50,
+                         height=25,
+                         width=25,
                          state='disabled',
                          yscrollcommand=v.set)
-        self.t.grid(column=4, row=1, rowspan=2, columnspan=6, sticky=(tk.E))
-        self.entry = tk.Text(master=self.content,
-                             width=50,
-                             height=50,
+        self.t.grid(column=2, row=1, rowspan=1, columnspan=1, sticky=(tk.E), padx=15, pady=15)
+        self.entry = tk.Text(master=self.canvas,
+                             width=25,
+                             height=25,
                              fg='black',
                              bg='white',
-                             font=('Times New Roman', 11))
+                             font=('Times New Roman', 11),
+                             yscrollcommand=v2.set)
+
+        self.help = ''
+        self.refresh = ''
+        self.info = ''
+        self.exi = ''
+
         v.config(command=self.t.yview)
-        self.entry.grid(column=0, row=1, columnspan=1, rowspan=1, sticky=(tk.W))
+        v2.config(command=self.entry.yview)
+        self.entry.grid(column=0, row=1, columnspan=1, rowspan=1, sticky=(tk.W), padx=15, pady=15)
+        #self.icon_size.pack(side=tk.LEFT)
 
     def main(self):
 
@@ -172,6 +239,16 @@ class DDS:
 
         def handle_click2():
             print("2nd button clicked")
+            print(self.window.grid_slaves())
+            print(self.content.grid_info())
+
+            print(self.help)
+            print(self.refresh)
+            print(self.info)
+            print(self.exi)
+            print(self.entry.grid_info())
+            print(self.t.grid_info())
+
             entry = self.entry
             data = entry.get('1.0', tk.END)
             file1 = open('numbers.txt', 'w')
@@ -180,11 +257,12 @@ class DDS:
             var = process()
             self.t.config(state='normal')
             try:
+                self.t.delete('1.0', tk.END)
                 self.t.insert("1.0", var)
             except:
                 print("Unable to config label")
 
-            self.t.grid(column=4, row=1, rowspan=2, columnspan=6, sticky=(tk.E))
+            self.t.grid(column=2, row=1, rowspan=2, columnspan=3, sticky=(tk.E))
             self.t.config(state='disabled')
 
         def on_exit():
@@ -196,18 +274,18 @@ class DDS:
         array = ""
         array = line
         label = tk.Label(
-            master=self.content,
+            master=self.canvas,
             text="Welcome to DDS Bag Calculator.\nUse the template and put \n"
                  "in your order numbers corresponding\n"
                  " to each category and hit refresh on the far right!")
 
-        output = tk.Label(master=self.content,
+        output = tk.Label(master=self.canvas,
                           text="Fill in your order on the left and hit\n"
                                " the refresh button. Below shows how\n"
                                " to get each order")
 
         refresh = tk.Button(
-            master=self.content,
+            master=self.canvas,
             text="Refresh Data",
             width=15,
             height=5,
@@ -217,7 +295,7 @@ class DDS:
         )
 
         exit = tk.Button(
-            master=self.content,
+            master=self.canvas,
             text="Exit",
             width=15,
             height=5,
@@ -229,10 +307,16 @@ class DDS:
         template = 'Amp/Fet\n13\nGanja/Grass\n19\nEctasy/Candy\n23\nMeth\n41\nCoke\n11\nHero\n9\n4'
         self.entry.insert(tk.END, template)
 
-        label.grid(column=0, row=0, sticky=tk.NW)
-        refresh.grid(column=1, row=4, pady=5, padx=5)
-        exit.grid(column=2, row=4, pady=5, padx=5)
-        output.grid(column=4, row=0, sticky=tk.NE)
+        label.grid(column=0, row=0, sticky=tk.NW, padx=15, pady=15)
+        refresh.grid(column=0, row=4, pady=5, padx=5, sticky=tk.W)
+        exit.grid(column=2, row=4, pady=5, padx=5, sticky=tk.SE)
+        output.grid(column=2, row=0, sticky=tk.NE, padx=15, pady=15)
+
+        self.help = label.grid_info()
+        self.refresh = refresh.grid_info()
+        self.info = output.grid_info()
+        self.exi = exit.grid_info()
+
         self.window.mainloop()
 
 
