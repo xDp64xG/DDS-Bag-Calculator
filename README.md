@@ -23,6 +23,7 @@
 
 # Images of GUI DDS
 <div style ="width:60px ; height:60px">
+<img src = 'https://snipboard.io/MOkAvf.jpg' alt="Intro of Program" width="25%" height="25%">
 <img src = 'https://snipboard.io/yRgnrH.jpg' alt="Intro of Program" width="25%" height="25%">
 <img src = 'https://snipboard.io/5wYRr8.jpg' alt="Update Program" width="25%" height="25%">
 <img src = 'https://snipboard.io/Xm47ih.jpg' alt="New data" width="25%" height="25%">
