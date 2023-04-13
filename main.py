@@ -19,6 +19,10 @@ class DDS:
             return os.path.join(base_path, relative_path)
 
         self.array = ""
+        self.input = ""
+        self.output = ""
+
+
         self.lines2 = ""
         self.window = tk.Tk()
         self.window.geometry("561x668")
@@ -35,21 +39,21 @@ class DDS:
         self.content = tk.Frame(self.window, borderwidth=5, relief='ridge')
 
         self.window.grid_rowconfigure(0, weight=1)
-        self.window.grid_rowconfigure(1, weight=0)
+        """self.window.grid_rowconfigure(1, weight=0)
         self.window.grid_rowconfigure(2, weight=0)
         self.window.grid_rowconfigure(3, weight=0)
         self.window.grid_rowconfigure(4, weight=0)
-        self.window.grid_rowconfigure(5, weight=0)
+        self.window.grid_rowconfigure(5, weight=0)"""
 
         self.window.grid_columnconfigure(0, weight=1)
-        self.window.grid_columnconfigure(1, weight=0)
+        """self.window.grid_columnconfigure(1, weight=0)
         self.window.grid_columnconfigure(2, weight=0)
         self.window.grid_columnconfigure(3, weight=0)
         self.window.grid_columnconfigure(4, weight=0)
-        self.window.grid_columnconfigure(5, weight=0)
+        self.window.grid_columnconfigure(5, weight=0)"""
 
 
-        self.content.grid(column=0, row=0, columnspan=4, rowspan=5, sticky=(tk.N + tk.S + tk.E + tk.W))
+        self.content.grid(column=0, row=0, columnspan=5, rowspan=5, sticky=(tk.N + tk.S + tk.E + tk.W))
 
         self.iconPath = resource_path('images/bg.png')
         self.tmpimg = Image.open(self.iconPath)
@@ -61,6 +65,30 @@ class DDS:
         self.canvas = tk.Canvas(self.content, height=796, width=599)
         #self.canvas.create_image(300, 275, image=self.icon, anchor = 'center')
         self.canvas.create_image(235, 400, image=self.icon, anchor='center')
+
+        def event(event):
+            print(event.height)
+            #print(self)
+            """screen_width = event.width
+            screen_height = event.height
+            self.canvas.config(height=screen_height, width=screen_width)
+            self.tmpimg.resize((screen_width, screen_height), Image.LANCZOS)
+            self.tmpimg.save(self.iconPath)
+            self.icon = ImageTk.PhotoImage(self.tmpimg)
+            self.canvas.create_image(235, 400, image=self.icon, anchor='center')
+
+            #self.canvas.create_image(235,400, image=self.icon, anchor='center')
+            for x in range(5):
+                self.content.columnconfigure(x, weight=1)
+                self.content.columnconfigure(x, weight=1)"""
+
+            #self.window.grid()
+            #self.window.geometry("{}x{}".format)
+
+            print("Configure")
+
+        self.window.bind('<Configure>', event, add=self.window)
+
 
 
 
@@ -96,6 +124,14 @@ class DDS:
         v2.config(command=self.entry.yview)
         self.entry.grid(column=0, row=1, columnspan=1, rowspan=1, sticky=(tk.W), padx=15, pady=15)
         #self.icon_size.pack(side=tk.LEFT)
+
+        """def resize(event):
+
+            pixelX = self.window.winfo_width() - yscrollbar.winfo_width()
+            pixelY = self.window.winfo_height()
+            LB["width"] = int(round(pixelX / h[1]))
+            LB["height"] = int(round(pixelY / h[0]))"""
+
 
     def main(self):
 
@@ -297,6 +333,28 @@ class DDS:
             command=on_exit
         )
 
+        var = tk.StringVar()
+        #If checkbox is clicked, make window transparent
+        def com():
+            #print("This has been checked.")
+            check = var.get()
+
+            if int(check) == 0:
+                self.window.attributes('-alpha', 0.5)
+            else:
+                self.window.attributes('-alpha', 1.0)
+            #print(self)
+
+        trans = tk.Checkbutton(master=self.content,
+                               width=7,
+                               height=5,
+                               text="Check here ",
+                               command=com,
+                               variable=var,
+                               onvalue='1',
+                               offvalue='0')
+
+
         template = 'Amp/Fet\n13\nGanja/Grass\n19\nEctasy/Candy\n23\nMeth\n41\nCoke\n11\nHero\n9\n4'
         self.entry.insert(tk.END, template)
 
@@ -304,6 +362,7 @@ class DDS:
         refresh.grid(column=0, row=4, pady=5, padx=5, sticky=tk.W)
         exit.grid(column=2, row=4, pady=5, padx=5, sticky=tk.SE)
         output.grid(column=2, row=0, sticky=tk.NE, padx=15, pady=15)
+        trans.grid(column=2, row=4, padx=2, pady=2, sticky=tk.SW)
 
         self.help = label.grid_info()
         self.refresh = refresh.grid_info()
