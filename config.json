@@ -71,7 +71,7 @@
   },
   {
    "optionDest": "datas",
-   "value": "C:/Users/browp/Documents/GitHub/DDS-Bag-Calculator/images/bg.png;."
+   "value": "C:/Users/browp/Documents/GitHub/DDS-Bag-Calculator/images;images/"
   }
  ],
  "nonPyinstallerOptions": {

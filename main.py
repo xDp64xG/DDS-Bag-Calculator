@@ -105,6 +105,7 @@ class DDS:
                          height=25,
                          width=25,
                          state='disabled',
+                         font=('Segoe UI Black', 10),
                          yscrollcommand=v.set)
         self.t.grid(column=2, row=1, rowspan=1, columnspan=1, sticky=(tk.E), padx=15, pady=15)
         self.entry = tk.Text(master=self.canvas,
@@ -112,7 +113,7 @@ class DDS:
                              height=25,
                              fg='black',
                              bg='white',
-                             font=('Times New Roman', 11),
+                             font=('Segoe UI Black', 10),
                              yscrollcommand=v2.set)
 
         self.help = ''
@@ -260,7 +261,7 @@ class DDS:
 
         def handle_click2():
             print("2nd button clicked")
-            print(self.window.grid_slaves())
+            """print(self.window.grid_slaves())
             print(self.content.grid_info())
 
             print(self.help)
@@ -268,7 +269,7 @@ class DDS:
             print(self.info)
             print(self.exi)
             print(self.entry.grid_info())
-            print(self.t.grid_info())
+            print(self.t.grid_info())"""
 
             entry = self.entry
             data = entry.get('1.0', tk.END)
