@@ -2,6 +2,8 @@
  Calculate exact bag accounts in DDS inputted into 'numbers.txt' file by the user and outputted to 'finished.txt'.
 
 # Version and Update Log
+0.0.9 - Woah, what an update 4 months later. I have removed the need of needing  any txt file, because of my lazy way of doing things prob scared people...silly me. Everything is now done through the input text box. ALSO NOW WE GOT A BACKGROUND IMAGE THAT somewhat RESIZES WITH THE WINDOW! (you don't understand how long I worked on this...it was a huge accomplishment with a simple image...imgaine the exe file I'm going to have to test out again...)Anyways...enough rambling, this is just a big rewrite of how things are done simplifying the program. Keep up to date with more updates coming soon
+
  0.0.4 - Added in transparency option, would like to add a settings window to customize size in the near future. Also signed my application in the release tab. I should comment my code down to explain exactly what I'm doing.
 
  0.0.2 - Trying to use a new function for the program, to try and fine tune whats on the window and where at. Planning to expand upon this.
