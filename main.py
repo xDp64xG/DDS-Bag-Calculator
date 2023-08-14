@@ -1,8 +1,9 @@
 import tkinter as tk
+from tkinter import font
 from PIL import ImageTk, Image
 import os
 import sys
-
+import json
 
 """
 MIT License
@@ -15,6 +16,15 @@ Copyright (c) 2023 Paul Brow
 
 class BagCalculator:
     def __init__(self):
+        self.DEFAULT_OPTIONS = {
+            "Transparency": 0.2,
+            "Font": "Segoe UI Black",
+            "Input": "Enabled",
+            "Output": "Enabled",
+            "Template": "gimme orders...",
+            "FontSize": 10
+        }
+        self.options = {}
         self.window = tk.Tk()
         self.window.geometry("561x668")
         self.window.title("Bag Calculator")
@@ -52,30 +62,32 @@ class BagCalculator:
         self.checkbox_var = tk.IntVar(value=0)
         self.checkbox = tk.Checkbutton(master=self.canvas, text="Transparent", variable=self.checkbox_var,
                                        command=self.toggle_transparency)
-        self.checkbox.grid(column=1, row=1, columnspan=2, sticky=tk.N, pady=5)
+        self.checkbox.grid(column=0, row=3, columnspan=2, sticky=tk.SE, pady=5)
         self.entry.config(yscrollcommand=v_scrollbar1.set)
         self.t.config(yscrollcommand=v_scrollbar2.set)
         self.initialize_buttons()
 
     def toggle_transparency(self):
         if self.checkbox_var.get():
-            self.window.attributes("-alpha", 0.2)  # Set window transparency to 20%
+            transparency = self.options.get("Transparency", .2)
+            self.window.attributes("-alpha", transparency)  # Set window transparency to 20%
         else:
             self.window.attributes("-alpha", 1.0)  # Reset window transparency to 100%
 
     def update_ui_layout(self, event):
-        self.update_background_image()
+        new_width = self.canvas.winfo_width()
+        new_height = self.canvas.winfo_height()
 
-        canvas_width = self.canvas.winfo_width()
-        canvas_height = self.canvas.winfo_height()
+        # Resize background image
+        resized_img = self.background_image.resize((new_width, new_height), Image.ANTIALIAS)
+        self.background_image_tk = ImageTk.PhotoImage(resized_img)
+        self.canvas.create_image(0, 0, image=self.background_image_tk, anchor='nw')
 
-        # Update the positions of the text boxes
-        self.entry.grid(column=0, row=1, sticky=(tk.W, tk.N), padx=15, pady=15)
-        self.t.grid(column=2, row=1, sticky=(tk.E, tk.N), padx=15, pady=15)
-
-        # Update the positions of the buttons
-        self.refresh_button.grid(column=0, row=4, sticky=(tk.W, tk.S), padx=5, pady=5)
-        self.exit_button.grid(column=2, row=4, sticky=(tk.E, tk.S), padx=5, pady=5)
+        # Update text box and entry positions
+        self.canvas.grid_rowconfigure(1, weight=1)
+        self.canvas.grid_columnconfigure(1, weight=1)
+        self.t.grid(row=1, column=2, sticky=tk.NE, padx=15, pady=15)
+        self.entry.grid(row=1, column=0, sticky=tk.NW, padx=15, pady=15)
 
     def load_background_image(self):
         self.background_image = Image.open(self.image_path)
@@ -125,7 +137,18 @@ class BagCalculator:
             fg='red',
             command=self.on_exit
         )
-        self.exit_button.grid(column=3, row=2, sticky=tk.E, padx=5, pady=5)
+        self.exit_button.grid(column=2, row=2, sticky=tk.E, padx=5, pady=5)
+
+        self.setting = tk.Button(
+            master=self.canvas,
+            text="Settings",
+            width=15,
+            height=5,
+            bg="grey",
+            fg="black",
+            command=self.settings_
+        )
+        self.setting.grid(column=1, row=2, sticky=tk.S, padx=5, pady=5)
 
     def handle_refresh(self):
         data = self.entry.get('1.0', tk.END)
@@ -147,7 +170,7 @@ class BagCalculator:
             if line:  # Skip empty lines
                 try:
                     var = int(line)
-                    output_text += f"--------------------\n{var}\n"
+                    output_text += f"--------------------\n\n"
                 except ValueError:
                     output_text += f"--------------------\n{line}\n"
                     continue  # Skip the rest of the processing for non-integer lines
@@ -155,7 +178,7 @@ class BagCalculator:
                 bag = var
                 bag_amount = 0  # Initialize the bag amount for the line
                 if bag == next((size for size, _ in bag_sizes if size == bag), None):
-                    output_text += f"[{var}]: Use a [{var}] gram bag\n"
+                    output_text += f"[{var} grams]: Use a [{var}] gram bag\n"
                 else:
                     next_bag_size = next((size for size, _ in bag_sizes if size > bag), None)
                     if next_bag_size:
@@ -173,8 +196,89 @@ class BagCalculator:
     def on_exit(self):
         self.window.destroy()
 
+    def settings_(self):
+        new_window = tk.Toplevel(self.window)
+        new_window.title("Settings")
+
+        # Add a scrollbar to select transparency
+        transparency_label = tk.Label(new_window, text="Transparency:")
+        transparency_label.pack()
+        transparency_scrollbar = tk.Scale(new_window, from_=0.2, to=1.0, resolution=0.2, orient="horizontal")
+        transparency_scrollbar.pack()
+
+        # Add font options dropdown
+        font_label = tk.Label(new_window, text="Font:")
+        font_label.pack()
+        fonts = ("Arial", "Times New Roman", "Segoe UI", "Calibri", "Verdana")
+        font_var = tk.StringVar()
+        font_var.set(fonts[0])
+        font_dropdown = tk.OptionMenu(new_window, font_var, *fonts)
+        font_dropdown.pack()
+
+        # Add font size options for input and output text widgets
+        font_size_label = tk.Label(new_window, text="Font Size:")
+        font_size_label.pack()
+        ####
+        font_size_var = tk.IntVar(value=10)
+        font_size_entry = tk.Entry(new_window, textvariable=font_size_var)
+        font_size_entry.pack()
+
+        # Add a button to apply font size changes
+
+        save_text_label = tk.Label(new_window, text="Save Text:")
+        save_text_label.pack()
+        save_textbox = tk.Text(new_window, width=30, height=5)
+        save_textbox.pack()
+        # Add a button to save options
+        def save_options():
+            options = {
+                "Transparency": transparency_scrollbar.get(),
+                "Font": font_var.get(),
+                "Font size": font_size_var.get(),
+                "Template": save_textbox.get("1.0", tk.END).strip()
+            }
+            with open("options.json", "w") as json_file:
+                json.dump(options, json_file, indent=4)
+                self.apply_options(options)
+                self.options = options
+
+        save_button = tk.Button(new_window, text="Save Options", command=save_options)
+        save_button.pack()
+
+    def apply_options(self, options):
+        # ... (your existing apply_options code here)
+
+        if "FontSize" in options:
+            font_size = options["FontSize"]
+            input_font = font.Font(family=options["Font"], size=font_size)
+            output_font = font.Font(family=options["Font"], size=font_size)
+            self.entry.config(font=input_font)
+            self.t.config(font=output_font)
+
+        if "Template" in options:
+            template_text = options["Template"]
+            self.entry.delete("1.0", tk.END)
+            self.entry.insert("1.0", template_text)
+
+        for key, value in self.DEFAULT_OPTIONS.items():
+            if key not in options:
+                options[key] = value
+
+
+    def load_options(self):
+        try:
+            with open("options.json", "r") as json_file:
+                self.options = json.load(json_file)
+                self.apply_options(self.options)
+        except FileNotFoundError:
+            self.apply_options(self.DEFAULT_OPTIONS)
+        except json.JSONDecodeError:
+            self.apply_options(self.DEFAULT_OPTIONS)
+
+
     def run(self):
         #self.load_background_image()
+        self.load_options()
         self.window.mainloop()
 
 if __name__ == "__main__":
