@@ -1,3 +1,4 @@
 
+*.toc
 *.xml
-.idea/DDS-Bag-Calculator.iml
+*.pyc
