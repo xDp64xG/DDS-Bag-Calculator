@@ -19,8 +19,6 @@ class BagCalculator:
         self.DEFAULT_OPTIONS = {
             "Transparency": 0.2,
             "Font": "Segoe UI Black",
-            "Input": "Enabled",
-            "Output": "Enabled",
             "Template": "gimme orders...",
             "FontSize": 10
         }
@@ -204,14 +202,16 @@ class BagCalculator:
         transparency_label = tk.Label(new_window, text="Transparency:")
         transparency_label.pack()
         transparency_scrollbar = tk.Scale(new_window, from_=0.2, to=1.0, resolution=0.2, orient="horizontal")
+        transparency_scrollbar.set(self.options.get("Transparency"))
         transparency_scrollbar.pack()
 
         # Add font options dropdown
         font_label = tk.Label(new_window, text="Font:")
         font_label.pack()
         fonts = ("Arial", "Times New Roman", "Segoe UI", "Calibri", "Verdana")
-        font_var = tk.StringVar()
-        font_var.set(fonts[0])
+        font_var = tk.StringVar(value=self.options.get("Font"))
+        #font_var.set(fonts[0])
+
         font_dropdown = tk.OptionMenu(new_window, font_var, *fonts)
         font_dropdown.pack()
 
@@ -219,7 +219,8 @@ class BagCalculator:
         font_size_label = tk.Label(new_window, text="Font Size:")
         font_size_label.pack()
         ####
-        font_size_var = tk.IntVar(value=10)
+        #font_size_var = tk.IntVar(value=10)
+        font_size_var = tk.IntVar(value=self.options.get("FontSize"))
         font_size_entry = tk.Entry(new_window, textvariable=font_size_var)
         font_size_entry.pack()
 
@@ -228,13 +229,14 @@ class BagCalculator:
         save_text_label = tk.Label(new_window, text="Save Text:")
         save_text_label.pack()
         save_textbox = tk.Text(new_window, width=30, height=5)
+        save_textbox.insert(tk.END, "{}".format(self.options.get("Template")))
         save_textbox.pack()
         # Add a button to save options
         def save_options():
             options = {
                 "Transparency": transparency_scrollbar.get(),
                 "Font": font_var.get(),
-                "Font size": font_size_var.get(),
+                "FontSize": font_size_var.get(),
                 "Template": save_textbox.get("1.0", tk.END).strip()
             }
             with open("options.json", "w") as json_file:
@@ -264,16 +266,20 @@ class BagCalculator:
             if key not in options:
                 options[key] = value
 
-
     def load_options(self):
         try:
             with open("options.json", "r") as json_file:
                 self.options = json.load(json_file)
-                self.apply_options(self.options)
         except FileNotFoundError:
-            self.apply_options(self.DEFAULT_OPTIONS)
+            self.options = self.DEFAULT_OPTIONS
         except json.JSONDecodeError:
-            self.apply_options(self.DEFAULT_OPTIONS)
+            self.options = self.DEFAULT_OPTIONS
+
+        self.apply_options(self.options)
+
+        if self.options != self.DEFAULT_OPTIONS:
+            with open("options.json", "w") as json_file:
+                json.dump(self.options, json_file, indent=4)
 
 
     def run(self):
