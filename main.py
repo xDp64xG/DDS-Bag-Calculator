@@ -60,10 +60,27 @@ class BagCalculator:
         self.checkbox_var = tk.IntVar(value=0)
         self.checkbox = tk.Checkbutton(master=self.canvas, text="Transparent", variable=self.checkbox_var,
                                        command=self.toggle_transparency)
-        self.checkbox.grid(column=0, row=3, columnspan=2, sticky=tk.SE, pady=5)
+        # Create a new checkbox for 'Stay on Top'
+        self.stay_on_top_var = tk.IntVar(value=0)
+        self.stay_on_top_checkbox = tk.Checkbutton(
+            master=self.canvas,
+            text="Stay on Top",
+            variable=self.stay_on_top_var,
+            command=self.toggle_stay_on_top
+        )
+        self.stay_on_top_checkbox.grid(column=2, row=3, sticky=tk.S, pady=5)
+
+        self.checkbox.grid(column=0, row=3, sticky=tk.E, pady=5)
         self.entry.config(yscrollcommand=v_scrollbar1.set)
         self.t.config(yscrollcommand=v_scrollbar2.set)
         self.initialize_buttons()
+
+    def toggle_stay_on_top(self):
+        if self.stay_on_top_var.get():
+            self.window.attributes("-topmost", 1)  # Make the window stay on top
+        else:
+            self.window.attributes("-topmost", 0)  # Allow the window to be moved behind other windows
+
 
     def toggle_transparency(self):
         if self.checkbox_var.get():
