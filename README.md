@@ -1,8 +1,13 @@
 # DDS Bag Calculator
- Calculate exact bag accounts in DDS inputted into 'numbers.txt' file by the user and outputted to 'finished.txt'.
+ Calculate exact bag accounts in DDS inputted.
 
 # Version and Update Log
-0.0.9 - Woah, what an update 4 months later. I have removed the need of needing  any txt file, because of my lazy way of doing things prob scared people...silly me. Everything is now done through the input text box. ALSO NOW WE GOT A BACKGROUND IMAGE THAT somewhat RESIZES WITH THE WINDOW! (you don't understand how long I worked on this...it was a huge accomplishment with a simple image...imgaine the exe file I'm going to have to test out again...)Anyways...enough rambling, this is just a big rewrite of how things are done simplifying the program. Keep up to date with more updates coming soon
+0.2.0 - Now you're able to use your own backgrounds(will add specifications and attempt to add a function to make sure image is properly sized before loading). Also added reset to default for settings, and also these settings work smoothly when saving options, no need for a reload, will need to work on buttons and will re add text for each column. Just need more testing on other environments. 
+
+ 0.1.0 - We got settings, you can now customize some font settings, font size, a template message to always tell you what to do or to add a template for your orders and stay organized. Want to have the transparency window less see through? Good news, we added a little slide bar to increase or decrease transparency, .2 being almost see through and 1 being a solid window. Also when you save the settings, it will save into 'options.json' and will use these settings each time you load into the application. Also the background is fully resizeable and would like to work on adding personal images you can use, such as in custom folder and images to customize your calculator the way you want to. 
+
+
+ 0.0.9 - Woah, what an update 4 months later. I have removed the need of needing any txt file, because of my lazy way of doing things prob scared people...silly me. Everything is now done through the input text box. ALSO NOW WE GOT A BACKGROUND IMAGE THAT somewhat RESIZES WITH THE WINDOW! (you don't understand how long I worked on this...it was a huge accomplishment with a simple image...imagine the exe file I'm going to have to test out again...)Anyways...enough rambling, this is just a big rewrite of how things are done simplifying the program. Keep up to date with more updates coming soon
 
  0.0.4 - Added in transparency option, would like to add a settings window to customize size in the near future. Also signed my application in the release tab. I should comment my code down to explain exactly what I'm doing.
 
@@ -11,7 +16,7 @@
  0.0.1 - GUI version was born...take a look at one of the old images at the bottom...looks ugly but works. This was created with a personal focus of fulfilling orders on DDS, and thought about trying to make it universal for anyone to use.
 
 # How to Run?
- Install Python (3.8 currently works), run 'pip install pyinstaller', then in the directory of main,py, run 'python -m auto_py_to_exe' And import the config file included and convert. 
+ Install Python (3.8 & 3.9 currently works), run 'pip install pyinstaller', then in the directory of main,py, run 'python -m auto_py_to_exe' And import the config file included and convert. 
  
  Alternatively, in build, run main.exe.
  
