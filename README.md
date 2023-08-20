@@ -2,6 +2,8 @@
  Calculate exact bag accounts in DDS inputted.
 
 # Version and Update Log
+0.2.0 - Now you're able to use your own backgrounds(will add specifications and attempt to add a function to make sure image is properly sized before loading). Also added reset to default for settings, and also these settings work smoothly when saving options, no need for a reload, will need to work on buttons and will re add text for each column. Just need more testing on other environments. 
+
  0.1.0 - We got settings, you can now customize some font settings, font size, a template message to always tell you what to do or to add a template for your orders and stay organized. Want to have the transparency window less see through? Good news, we added a little slide bar to increase or decrease transparency, .2 being almost see through and 1 being a solid window. Also when you save the settings, it will save into 'options.json' and will use these settings each time you load into the application. Also the background is fully resizeable and would like to work on adding personal images you can use, such as in custom folder and images to customize your calculator the way you want to. 
 
 
@@ -14,7 +16,7 @@
  0.0.1 - GUI version was born...take a look at one of the old images at the bottom...looks ugly but works. This was created with a personal focus of fulfilling orders on DDS, and thought about trying to make it universal for anyone to use.
 
 # How to Run?
- Install Python (3.8 currently works), run 'pip install pyinstaller', then in the directory of main,py, run 'python -m auto_py_to_exe' And import the config file included and convert. 
+ Install Python (3.8 & 3.9 currently works), run 'pip install pyinstaller', then in the directory of main,py, run 'python -m auto_py_to_exe' And import the config file included and convert. 
  
  Alternatively, in build, run main.exe.
  
