@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import font
+from tkinter import filedialog
 from PIL import ImageTk, Image
 import os
 import sys
@@ -12,17 +13,10 @@ Copyright (c) 2023 Paul Brow
 """
 # pyinstaller --onefile --icon=images/icon.ico --add-data "images;images" --add-data "LICENSE.txt;." main.py
 
-
-
 class BagCalculator:
     def __init__(self):
-        self.DEFAULT_OPTIONS = {
-            "Transparency": 0.2,
-            "Font": "Segoe UI Black",
-            "Template": "gimme orders...",
-            "FontSize": 10
-        }
         self.options = {}
+        self.filename = ""
         self.window = tk.Tk()
         self.window.geometry("561x668")
         self.window.title("Bag Calculator")
@@ -35,7 +29,13 @@ class BagCalculator:
             base_path = os.path.abspath(".")
 
         self.image_path = os.path.join(base_path, "images/bg.png")
-
+        self.DEFAULT_OPTIONS = {
+            "Transparency": 0.2,
+            "Font": "Segoe UI Black",
+            "Template": "gimme orders...",
+            "FontSize": 10,
+            "Bg": self.image_path
+        }
         self.initialize_ui()
 
     def initialize_ui(self):
@@ -105,6 +105,8 @@ class BagCalculator:
         self.entry.grid(row=1, column=0, sticky=tk.NW, padx=15, pady=15)
 
     def load_background_image(self):
+
+        #Add custom background path...maybe to image folder?
         self.background_image = Image.open(self.image_path)
         self.background_photo = ImageTk.PhotoImage(self.background_image)
         self.background_label = self.canvas.create_image(0, 0, anchor=tk.NW, image=self.background_photo)
@@ -236,7 +238,6 @@ class BagCalculator:
         font_size_label = tk.Label(new_window, text="Font Size:")
         font_size_label.pack()
         ####
-        #font_size_var = tk.IntVar(value=10)
         font_size_var = tk.IntVar(value=self.options.get("FontSize"))
         font_size_entry = tk.Entry(new_window, textvariable=font_size_var)
         font_size_entry.pack()
@@ -248,13 +249,25 @@ class BagCalculator:
         save_textbox = tk.Text(new_window, width=30, height=5)
         save_textbox.insert(tk.END, "{}".format(self.options.get("Template")))
         save_textbox.pack()
+        #If button pressed, select img
+        def get_file():
+            filename = filedialog.askopenfilename(
+            parent=new_window,
+            title="Browse File"
+        )
+            self.filename = filename
+
+        bg_file = tk.Button(new_window, text="Choose your own background image", command=get_file)
+        bg_file.pack()
+
         # Add a button to save options
         def save_options():
             options = {
                 "Transparency": transparency_scrollbar.get(),
                 "Font": font_var.get(),
                 "FontSize": font_size_var.get(),
-                "Template": save_textbox.get("1.0", tk.END).strip()
+                "Template": save_textbox.get("1.0", tk.END).strip(),
+                "Bg": self.filename
             }
             with open("options.json", "w") as json_file:
                 json.dump(options, json_file, indent=4)
@@ -264,11 +277,19 @@ class BagCalculator:
         save_button = tk.Button(new_window, text="Save Options", command=save_options)
         save_button.pack()
 
+        def default_():
+            self.options = self.DEFAULT_OPTIONS
+            self.apply_options(self.options)
+        reset_button = tk.Button(new_window, text='Reset to default', command=default_)
+        reset_button.pack()
+
+        #Make a default button
+
     def apply_options(self, options):
-        # ... (your existing apply_options code here)
 
         if "FontSize" in options:
             font_size = options["FontSize"]
+            #Just use 1, font_update = [], self.[].config(font=font_update
             input_font = font.Font(family=options["Font"], size=font_size)
             output_font = font.Font(family=options["Font"], size=font_size)
             self.entry.config(font=input_font)
@@ -278,7 +299,9 @@ class BagCalculator:
             template_text = options["Template"]
             self.entry.delete("1.0", tk.END)
             self.entry.insert("1.0", template_text)
-
+        if "Bg" in options:
+            self.image_path = options["Bg"]
+            self.load_background_image()
         for key, value in self.DEFAULT_OPTIONS.items():
             if key not in options:
                 options[key] = value
